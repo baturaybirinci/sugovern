@@ -1,0 +1,163 @@
+$headerSize: 15vh; 
+.Header-container{
+    height: $headerSize;
+}
+.Header{
+    display: flex;
+    justify-content: center;
+    height: $headerSize;
+    position: fixed;
+    top:0;
+    z-index: 95;
+    width: 100vw;
+    background-color: #ffffff;
+}
+.Header-web {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.Header-logo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    background-color: #173A6A;
+    padding: 10px 20px;
+    color: white;
+    width: fit-content;
+    text-decoration: none;
+}
+.Header-logo:hover {
+    color: white;
+    text-decoration: none;
+}
+.Header-logo:visited {
+    color: white;
+    text-decoration: none;
+}
+
+.Header-links {
+    width: 60%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.Header-link {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    align-self: center;
+    text-decoration: none;
+    color: #5082C7;
+}
+
+.Header-link:hover {
+    color: #5082C7;
+    text-decoration: none;
+}
+
+.Header-link-mobile {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    align-self: center;
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+}
+
+.Header-link-mobile:hover {
+    color: white;
+    text-decoration: none;
+}
+
+#Header-user {
+    align-self: center;
+}
+#Header-user-toggle {
+    width: fit-content;
+    color: white;
+    background-color: #173A6A;
+    padding: 5px;
+    border-radius: 5px;
+    align-self: center;
+}
+
+#Header-user-toggle::after {
+    display: none;
+}
+
+.Header-mobile {
+    display: none;
+    width: 100%;
+    background-color: #173A6A;
+    z-index: 500;
+}
+
+.Header-links-mobile {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0px 0px 4rem 0px;
+    background-color: #173A6A;
+}
+
+.hamburger-active {
+    position: fixed;
+    top: 0;
+}
+
+.Header-links-mobile-links {
+    display: flex;
+    flex-direction: column;
+    justify-self: flex-start;
+}
+
+.Header-userarea {
+    color:#5082C7;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.Header-mobile-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5vw;
+}
+
+.Header-hamburger {
+    color: white;
+    align-self: center;
+}
+.Wallet{
+    margin: auto;
+}
+@media only screen and (max-width: 990px) {
+    .Header {
+        width: 100%;
+    }
+
+    .Header-web {
+        display: none;
+    }
+
+    .Header-mobile {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0 0 20px 0 ;
+        
+    }
+
+    .Header-links {
+        display: none;
+    }
+    body {
+      background-color: lightblue;
+    }
+  }
