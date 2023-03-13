@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import Spinner from "../components/Spinner";
-
+import Spinner from "@/components/Spinner";
 const CheckMyTokens = ({ onCheckYKBalance, onCheckVoterBalance }) => {
   const [voterBalance, setVoterBalance] = useState(-1);
   const [ykBalance, setYKBalance] = useState(-1);

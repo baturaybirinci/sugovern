@@ -1,0 +1,34 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  color: black;
+  font-family:'Montserrat', sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.page{
+  width: 90%;
+  margin: auto;
+}
+
+.index-page{
+  width: 80%;
+  margin: auto;
+}
+/*TODO: DISARI CIKAR */
+.dao-page{
+  display: flex;
+
+}
+.sidebar{
+  width: 20vw;
+  min-width: 14vw;
+}

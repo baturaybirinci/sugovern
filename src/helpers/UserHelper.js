@@ -1,31 +1,116 @@
 import Web3 from "web3";
-// import {
-//   NFT_JSON,
-//   DEX_JSON,
-//   TOKEN_JSON,
-//   TOKEN_URI_ABI,
-//   NAME_ABI,
-//   SYMBOL_ABI,
-//   API_PATH,
-//   DEX_ADDRESS,
-//   OWNER_OF_ABI,
-//   SELL_NFT_ABI,
-//   BUY_NFT_ABI,
-// } from "../constants";
-
+import {DAO_ADDRESS, DAO_JSON, FACTORY_JSON} from "../../constant";
 
 async function WalletConnect() {
     let ret;
     if (window.ethereum) {
-      await window.ethereum
-        .request({ method: "eth_requestAccounts" })
-        .then((accounts) => {
-          ret = accounts[0];
-        });
+        await window.ethereum
+            .request({method: "eth_requestAccounts"})
+            .then((accounts) => {
+                ret = accounts[0];
+            });
     }
     return ret;
-  }
+}
 
+async function DaoIsExist(address) {
+    const web3 = new Web3(window.ethereum)
+    const factoryContract = new web3.eth.Contract(
+        FACTORY_JSON["abi"],
+        DAO_ADDRESS
+    );
+    let retVal = false;
+    await factoryContract.methods
+        .dao_exists(address)
+        .call()
+        .then((result) => {
+            retVal = result
+        }).catch((err) => alert(err))
+    return retVal;
+}
 
+function BindContract(abi, address) {
+    const web3 = new Web3(window.ethereum)
+    return new web3.eth.Contract(
+        abi,
+        address
+    )
+}
 
-export { WalletConnect}
+async function fetchNextDaoId(contract) {
+    let nextDaoId;
+    if (contract) {
+        await contract.methods
+            .next_dao_id()
+            .call()
+            .then((result) => {
+                nextDaoId = result;
+            })
+    }
+    return nextDaoId;
+}
+
+async function fetchAllDaos(contract) {
+    const web3 = new Web3(window.ethereum)
+    const numOfDaos = await fetchNextDaoId(contract);
+    //fetch the address of the top DAO
+    let res;
+    if (contract) {
+        await contract.methods
+            .top_dao()
+            .call()
+            .then((result) => {
+                res = result;
+            })
+    }
+    let allDaos = [];
+    //fetch all the DAOs created by the DAOFactory contract
+    //fetch if the dao is deleted or not, if it is deleted, then we will not show it in the UI
+    //fetch the name and description of the DAOs
+    //push the DAOs to allDaos array
+    for (let i = 0; i < numOfDaos; i++) {
+        let daoAddress, daoName, daoDescription;
+        await contract.methods
+            .all_daos(i)
+            .call()
+            .then((result) => {
+                daoAddress = result;
+            })
+        //check if the DAO is deleted or not, if it is deleted, then we will not show it in the UI
+        if (await DaoIsExist(daoAddress)) {
+            let daoContract = new web3.eth.Contract(DAO_JSON['abi'], daoAddress);
+            await daoContract.methods
+                .dao_name()
+                .call()
+                .then((result) => {
+                    daoName = result;
+                })
+            await daoContract.methods
+                .dao_description()
+                .call()
+                .then((result) => {
+                    daoDescription = result;
+                })
+            allDaos.push([daoAddress, daoName, daoDescription]);
+            console.log([daoAddress, daoName, daoDescription])
+        }
+    }
+    return allDaos;
+}
+async function DaoInfo(contract,address){
+    var retVal = [0,0,0,0]; // Children Num, Name, Description, Proposal Names
+    contract.methods.num_children(String(address)).call().then((result) => {
+        retVal[0] = result
+    })
+    contract.methods.dao_name().call().then((result) => {
+        retVal[1] = result
+    })
+    contract.methods.dao_description().call().then((result) => {
+        retVal[2] = result
+    })
+    contract.methods.getProposalName().call().then((result) => {
+        retVal[3] = result
+    })
+    return retVal;
+}
+export {WalletConnect, DaoIsExist, BindContract, fetchNextDaoId, fetchAllDaos, DaoInfo}

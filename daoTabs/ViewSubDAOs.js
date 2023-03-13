@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import Spinner from "../components/Spinner";
+import Spinner from "../src/components/Spinner";
 
 const ViewSubDAOs = ({
   onGetSubDAOs,

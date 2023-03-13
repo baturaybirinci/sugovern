@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useRef, useState } from 'react'
-import Spinner from '../components/Spinner'
+import Spinner from '../src/components/Spinner'
 
 const WithdrawTokens = ({onVoterSharesToBeGiven, onYKSharesToBeGiven, onWithdrawVoterTokens, onWithdrawYKTokens}) => {
   const info = useRef({amount1: 0, amount2: 0});

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from "styled-components"
 import { useState, useEffect } from 'react'
-import Spinner from '../components/Spinner'
+import Spinner from '../src/components/Spinner'
 
 const TextBoxProposal = styled.div`
     overflow: hidden;

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import PieChart from '../components/PieChart'
-import BarChart from '../components/BarChart'
+import PieChart from '../src/components/PieChart'
+import BarChart from '../src/components/BarChart'
 import { useState } from 'react'
-import Spinner from '../components/Spinner'
+import Spinner from '../src/components/Spinner'
 import styled from "styled-components"
 
 const TextBoxProposal = styled.div`

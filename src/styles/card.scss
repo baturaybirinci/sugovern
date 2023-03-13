@@ -1,0 +1,18 @@
+.item-card {
+    background-color: #f4f4f4;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    display: flex;
+    overflow: hidden;
+    border-radius: 10px;
+    >div{
+        width: 100%;
+    }
+}
+
+.card-text{
+    padding: 2vh 0 0 1vw;
+}
+.card-title {
+    text-align: start;
+    color: #173a6a;
+}
