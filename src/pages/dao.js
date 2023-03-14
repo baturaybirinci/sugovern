@@ -23,7 +23,7 @@ import Sidebar from '../components/SideBar'
 import LockScreen from '../components/LockScreen'
 import TransferTokens from '../../daoTabs/TransferTokens'
 import {DAO_JSON, TOKEN_JSON, FACTORY_JSON, DAO_ADDRESS} from "../../constant";
-import {BindContract, DaoIsExist, WalletConnect} from "@/helpers/UserHelper";
+import {BindContract, DaoInfo, DaoIsExist, WalletConnect} from "@/helpers/UserHelper";
 
 export default function Dao() {
     const router = useRouter(); //next js component to take information from url
@@ -42,126 +42,75 @@ export default function Dao() {
         name: "",
         description: "",
         total_voter_tokens: 0,
+        num_children: 0,
         total_yk_tokens: 0,
         total_proposals: 0,
         total_subdaos: 0
     }) //this is used to store the information about the DAO, we will set it in init() function, we will show it on the textbox under the DAO image
     const [popupTrigger, setPopupTrigger] = useState(false) //this is used inside Popup component, to trigger the popup when an error occurs, or a transaction is successful, or in a case of warning
     const [selectedNavItem, setSelectedNavItem] = useState(10); //this is used to change between the tabs, we will set it when a user clicks on the buttons on the sidebar, in default it is set to 10, which is the view proposals tab
-    const [daoFactoryContract, setDaoFactoryContract] = useState(undefined); //to store the DAOFactory contract instance
-    const [daoContract, setDaoContract] = useState(undefined); //to store the DAOFactory contract instance
 
     //these are the data of the contracts that, we will use them in init() function
     //we will take the abi of the contracts from these files, and we will take the address of the contracts from the URL
-
+    const setAlert = (err) =>
+    {
+        setAlertMessage({text: err.message, title: "Error"});
+        setPopupTrigger(true)
+    }
     useEffect(() => {
         WalletConnect().then((res) => {
             setWalletAddress(res);
         });
         if (address) {
-            let provider = window.ethereum;
-            const web3 = new Web3(provider);
-            let voterTokenContract, ykTokenContract;
-            if (!daoFactoryContract) {
-                setDaoFactoryContract(BindContract(FACTORY_JSON["abi"], DAO_ADDRESS))
+            if (!contracts['daoFactoryContract']) {
+                setContracts(prevState => ({
+                    ...prevState,
+                    daoFactoryContract: BindContract(FACTORY_JSON["abi"], DAO_ADDRESS)
+                }))
             } else {
-                if(!daoContract){
+                if (!contracts['daoContract']) {
                     DaoIsExist(address).then((res) => {
                         if (!res) {
-                            console.log('aa')
-                            setAlertMessage({text: "DAO does not exist", title: "Error"});
-                            setPopupTrigger(true);
+                            setAlert(Error("DAO does not exist"))
                         } else {
-                            setDaoContract(BindContract(DAO_JSON["abi"], address))
+                            setContracts(prevState => ({
+                                ...prevState,
+                                daoContract: BindContract(DAO_JSON["abi"], address)
+                            }))
                         }
-                        daoFactoryContract.methods.num_children(String(address)).call().then((result) =>
-                            setDaoInfo({
-                                name:'',
-                                description: '',
-                                num_children: result,
-                                total_proposals: 0
-                            })).catch((err) => {
-                            setAlertMessage({text: err.message, title: "Error"});
-                            setPopupTrigger(true)
-                        })
+                        contracts['daoFactoryContract'].methods.num_children(String(address)).call().then((result) =>
+                            setDaoInfo(prevState => ({
+                                ...prevState,
+                                num_children: result
+                            }))).catch((err) => setAlert(err))
                     })
+                } else {
+                    contracts['daoContract'].methods.dao_name().call().then((result) => setDaoInfo(prevState => ({
+                        ...prevState,
+                        name: result
+                    }))).catch((err) => setAlert(err));
+                    contracts['daoContract'].methods.dao_description().call().then((result) => setDaoInfo(prevState => ({
+                        ...prevState,
+                        description: result
+                    }))).catch((err) => setAlert(err));
+                    contracts['daoContract'].methods.getProposalName().call().then((result) => setDaoInfo(prevState => ({
+                        ...prevState,
+                        total_proposals: result.length
+                    }))).catch((err) => setAlert(err));
+                    contracts['daoContract'].methods.voter_token().call().then((result) => setContracts(prevState => ({
+                        ...prevState,
+                        voterTokenContract: BindContract(DAO_JSON["abi"], result)
+                    }))).catch((err) => setAlert(err));
+                    contracts['daoContract'].methods.yk_token().call().then((result) => setContracts(prevState => ({
+                        ...prevState,
+                        ykTokenContract: BindContract(DAO_JSON["abi"], result)
+                    }))).catch((err) => setAlert(err));
+                    setInitialized(true)
                 }
-                else{
-                    var daoName, daoDescription, numChildren, proposalNames;
-
-                daoContract.methods.dao_name().call().then((result) => {
-                    daoName = result
-                }).catch((err) => {
-                    setAlertMessage({text: err.message, title: "Error"});
-                    setPopupTrigger(true)
-                });
-                daoContract.methods.dao_description().call().then((result) => {
-                    daoDescription = result
-                }).catch((err) => {
-                    setAlertMessage({text: err.message, title: "Error"});
-                    setPopupTrigger(true)
-                });
-                daoContract.methods.getProposalName().call().then((result) => {
-                    proposalNames = result
-                }).catch((err) => {
-                    setAlertMessage({text: err.message, title: "Error"});
-                    setPopupTrigger(true)
-                });
-                setDaoInfo({
-                    name: daoName,
-                    description: daoDescription,
-                    num_children: numChildren,
-                    total_proposals: proposalNames.length
-                });
-
-                let ykTokenAddress, voterTokenAddress;
-                daoContract.methods.voter_token().call().then((result) => {
-                    voterTokenAddress = result
-                }).catch((err) => {
-                    setAlertMessage({text: err.message, title: "Error"});
-                    setPopupTrigger(true)
-                })
-                daoContract.methods.yk_token().call().then((result) => {
-                    ykTokenAddress = result
-                }).catch((err) => {
-                    setAlertMessage({text: err.message, title: "Error"});
-                    setPopupTrigger(true)
-                })
-
-                try {
-                    voterTokenContract = new web3.eth.Contract(
-                        DAO_JSON["abi"],
-                        voterTokenAddress
-                    );
-                } catch (err) {
-                    setAlertMessage({text: "Invalid voter token address", title: "Error"});
-                    setPopupTrigger(true);
-                    return;
-                }
-
-                try {
-                    ykTokenContract = new web3.eth.Contract(
-                        DAO_JSON["abi"],
-                        ykTokenAddress
-                    );
-                } catch (err) {
-                    setAlertMessage({text: "Invalid YK token address", title: "Error"});
-                    setPopupTrigger(true);
-                    return;
-                }
-
-                //set the contract objects in the state
-                setContracts({
-                    daoContract: daoContract,
-                    daoFactoryContract: daoFactoryContract,
-                    voterTokenContract: voterTokenContract,
-                    ykTokenContract: ykTokenContract
-                });
-            }
             }
         }
 
-    }, [address, daoContract, daoFactoryContract])
+    }, [address, contracts])
 
     //address_given is the address of the DAO
     //this function is used to get the name of the DAO
@@ -893,7 +842,7 @@ export default function Dao() {
                         :
                         <div className="row mx-0">
 
-                            <Header WalletConnect={connectWallethandler}
+                            <Header WalletConnect={WalletConnect}
                                     logged={walletAddress !== undefined && walletAddress !== null}/>
                             <div className='page dao-page'>
                                 <Sidebar setSelectedNavItem={setSelectedNavItem} selectedNavItem={selectedNavItem}/>
