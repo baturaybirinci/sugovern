@@ -3,6 +3,47 @@ import {DAO_ADDRESS, DAO_JSON, FACTORY_JSON} from "../../constant";
 
 async function WalletConnect() {
     let ret;
+    // if (!window.ethereum) {
+    //     //alert("Please install MetaMask");
+    //     console.log()
+    // } else {
+    //     const chainId = 80001 // Avalanche FUJI C-Chain
+    //
+    //     if (window.ethereum.networkVersion !== chainId) {
+    //         try {
+    //             console.log("no same chain")
+    //             await window.ethereum.request({
+    //                 method: 'wallet_switchEthereumChain',
+    //                 params: [{chainId: web3.utils.toHex(chainId)}]
+    //             });
+    //         } catch (err) {
+    //             // This error code indicates that the chain has not been added to MetaMask
+    //             if (err.code === 4902) {
+    //                 await window.ethereum.request({
+    //                     method: 'wallet_addEthereumChain',
+    //                     params: [
+    //                         {
+    //                             chainName: 'Mumbai Testnet',
+    //                             chainId: web3.utils.toHex(chainId),
+    //                             nativeCurrency: {name: 'MATIC', decimals: 18, symbol: 'MATIC'},
+    //                             rpcUrls: ['https://rpc-mumbai.maticvigil.com']
+    //                         }
+    //                     ]
+    //                 });
+    //             }
+    //             if (window.ethereum) {
+    //                 await window.ethereum
+    //                     .request({method: "eth_requestAccounts"})
+    //                     .then((accounts) => {
+    //                         ret = accounts[0];
+    //                     });
+    //             }
+    //         }
+    //     }
+    // }
+    // if (!ret) {
+    //     ret = WalletConnect()
+    // }
     if (window.ethereum) {
         await window.ethereum
             .request({method: "eth_requestAccounts"})
@@ -10,7 +51,9 @@ async function WalletConnect() {
                 ret = accounts[0];
             });
     }
+
     return ret;
+
 }
 
 async function DaoIsExist(address) {
@@ -97,8 +140,9 @@ async function fetchAllDaos(contract) {
     }
     return allDaos;
 }
-async function DaoInfo(contract,address){
-    var retVal = [0,0,0,0]; // Children Num, Name, Description, Proposal Names
+
+async function DaoInfo(contract, address) {
+    var retVal = [0, 0, 0, 0]; // Children Num, Name, Description, Proposal Names
     contract.methods.num_children(String(address)).call().then((result) => {
         retVal[0] = result
     })
@@ -113,4 +157,5 @@ async function DaoInfo(contract,address){
     })
     return retVal;
 }
+
 export {WalletConnect, DaoIsExist, BindContract, fetchNextDaoId, fetchAllDaos, DaoInfo}
