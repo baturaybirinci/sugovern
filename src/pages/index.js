@@ -1,14 +1,21 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '@/styles/Home.module.css'
-import {BindContract, WalletConnect, DaoIsExist, fetchNextDaoId, fetchAllDaos} from '@/helpers/UserHelper'
+import {
+    BindContract,
+    WalletConnect,
+    DaoIsExist,
+    fetchNextDaoId,
+    fetchAllDaos,
+    NetworkControl
+} from '@/helpers/UserHelper'
 import {useEffect, useState} from 'react'
 import Header from "@/components/Header";
 import Card from "@/components/Card";
 import {SimpleGrid, Spinner} from "@chakra-ui/react";
 import Popup from "@/components/Popup";
 import Web3 from "web3";
-import {DAO_ADDRESS, DAO_JSON, FACTORY_JSON, TOKEN_ADDRESS} from "../../constant";
+import {DAO_ADDRESS, DAO_JSON, FACTORY_JSON, CHAIN_ID, TOKEN_ADDRESS} from "../../constant";
 
 export default function Home() {
     const [account, setAccount] = useState(null);
@@ -17,28 +24,35 @@ export default function Home() {
     const [daoFactoryContract, setDaoFactoryContract] = useState(undefined); //to store the DAOFactory contract instance
     const [all_daos, setall_daos] = useState([]); //to store all the DAOs created by the DAOFactory contract
     const [topDAOAddress, setTopDAOAddress] = useState(""); //to store the address of the top DAO
+    const [isCorrect, setIsCorrect] = useState(false); //this is used to change between the tabs, we will set it when a user clicks on the buttons on the sidebar, in default it is set to 10, which is the view proposals tab
 
     const [loaded, setLoaded] = useState(false); //to check if the page is loaded, i.e. all the DAOs are fetched from the blockchain
 
     useEffect(() => {
-            WalletConnect().then((res) => {
-                setAccount(res);
-            });
-            if (!daoFactoryContract) {
-                setDaoFactoryContract(BindContract(FACTORY_JSON["abi"], DAO_ADDRESS));
+            if (window.window.ethereum.networkVersion !== CHAIN_ID) {
+                console.log(window.window.ethereum.networkVersion)
+                NetworkControl().then(()=>setLoaded(false))
             } else {
-                let res;
-                if (all_daos.length === 0) {
-                    fetchAllDaos(daoFactoryContract).then((result) => setall_daos(result))
-                } else {
-                    console.log(all_daos)
-                    setLoaded(true)
+                if (!loaded) {
+                    WalletConnect().then((res) => {
+                        setAccount(res);
+                    });
+                    if (!daoFactoryContract) {
+                        setDaoFactoryContract(BindContract(FACTORY_JSON["abi"], DAO_ADDRESS));
+                    } else {
+                        let res;
+                        if (all_daos.length === 0) {
+                            fetchAllDaos(daoFactoryContract).then((result) => setall_daos(result))
+                        } else {
+                            console.log(all_daos)
+                            setLoaded(true)
+                        }
+                    }
                 }
             }
-
         }
         ,
-        [daoFactoryContract,all_daos]
+        [daoFactoryContract, all_daos, isCorrect, loaded]
     )
 
 

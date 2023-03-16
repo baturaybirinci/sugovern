@@ -1,49 +1,38 @@
 import Web3 from "web3";
 import {DAO_ADDRESS, DAO_JSON, FACTORY_JSON} from "../../constant";
 
+
+async function NetworkControl() {
+    const chainId = 80001;
+    if (window.ethereum.networkVersion !== chainId) {
+        try {
+            await window.ethereum.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{chainId: '0x13881'}]
+            });
+        } catch (err) {
+            // This error code indicates that the chain has not been added to MetaMask
+            if (err.code === 4902) {
+                await window.ethereum.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [
+                        {
+                            chainName: 'Mumbai Testnet',
+                            chainId: '0x13881',
+                            nativeCurrency: {name: 'MATIC', decimals: 18, symbol: 'MATIC'},
+                            rpcUrls: ['https://polygon-mumbai.g.alchemy.com/v2/your-api-key'],
+                            blockExplorerUrls: ['https://mumbai.polygonscan.com/']
+                        }
+                    ]
+                });
+            }
+        }
+    }
+}
+
 async function WalletConnect() {
+    await NetworkControl()
     let ret;
-    // if (!window.ethereum) {
-    //     //alert("Please install MetaMask");
-    //     console.log()
-    // } else {
-    //     const chainId = 80001 // Avalanche FUJI C-Chain
-    //
-    //     if (window.ethereum.networkVersion !== chainId) {
-    //         try {
-    //             console.log("no same chain")
-    //             await window.ethereum.request({
-    //                 method: 'wallet_switchEthereumChain',
-    //                 params: [{chainId: web3.utils.toHex(chainId)}]
-    //             });
-    //         } catch (err) {
-    //             // This error code indicates that the chain has not been added to MetaMask
-    //             if (err.code === 4902) {
-    //                 await window.ethereum.request({
-    //                     method: 'wallet_addEthereumChain',
-    //                     params: [
-    //                         {
-    //                             chainName: 'Mumbai Testnet',
-    //                             chainId: web3.utils.toHex(chainId),
-    //                             nativeCurrency: {name: 'MATIC', decimals: 18, symbol: 'MATIC'},
-    //                             rpcUrls: ['https://rpc-mumbai.maticvigil.com']
-    //                         }
-    //                     ]
-    //                 });
-    //             }
-    //             if (window.ethereum) {
-    //                 await window.ethereum
-    //                     .request({method: "eth_requestAccounts"})
-    //                     .then((accounts) => {
-    //                         ret = accounts[0];
-    //                     });
-    //             }
-    //         }
-    //     }
-    // }
-    // if (!ret) {
-    //     ret = WalletConnect()
-    // }
     if (window.ethereum) {
         await window.ethereum
             .request({method: "eth_requestAccounts"})
@@ -158,4 +147,4 @@ async function DaoInfo(contract, address) {
     return retVal;
 }
 
-export {WalletConnect, DaoIsExist, BindContract, fetchNextDaoId, fetchAllDaos, DaoInfo}
+export {WalletConnect, DaoIsExist, BindContract, fetchNextDaoId, fetchAllDaos, DaoInfo, NetworkControl}

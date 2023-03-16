@@ -23,7 +23,7 @@ import Sidebar from '../components/SideBar'
 import LockScreen from '../components/LockScreen'
 import TransferTokens from '../../daoTabs/TransferTokens'
 import {DAO_JSON, TOKEN_JSON, FACTORY_JSON, DAO_ADDRESS} from "../../constant";
-import {BindContract, DaoInfo, DaoIsExist, WalletConnect} from "@/helpers/UserHelper";
+import {BindContract, DaoInfo, DaoIsExist, NetworkControl, WalletConnect} from "@/helpers/UserHelper";
 
 export default function Dao() {
     const router = useRouter(); //next js component to take information from url
@@ -49,6 +49,7 @@ export default function Dao() {
     }) //this is used to store the information about the DAO, we will set it in init() function, we will show it on the textbox under the DAO image
     const [popupTrigger, setPopupTrigger] = useState(false) //this is used inside Popup component, to trigger the popup when an error occurs, or a transaction is successful, or in a case of warning
     const [selectedNavItem, setSelectedNavItem] = useState(10); //this is used to change between the tabs, we will set it when a user clicks on the buttons on the sidebar, in default it is set to 10, which is the view proposals tab
+    const [isCorrect, setIsCorrect] = useState(false); //this is used to change between the tabs, we will set it when a user clicks on the buttons on the sidebar, in default it is set to 10, which is the view proposals tab
 
     //these are the data of the contracts that, we will use them in init() function
     //we will take the abi of the contracts from these files, and we will take the address of the contracts from the URL
@@ -57,58 +58,63 @@ export default function Dao() {
         setPopupTrigger(true)
     }
     useEffect(() => {
-        WalletConnect().then((res) => {
-            setWalletAddress(res);
-        });
-        if (address) {
-            if (!contracts['daoFactoryContract']) {
-                setContracts(prevState => ({
-                    ...prevState,
-                    daoFactoryContract: BindContract(FACTORY_JSON["abi"], DAO_ADDRESS)
-                }))
-            } else {
-                if (!contracts['daoContract']) {
-                    DaoIsExist(address).then((res) => {
-                        if (!res) {
-                            setAlert(Error("DAO does not exist"))
+        if(!initialized){
+            NetworkControl().then((res) => setIsCorrect(res))
+            if (isCorrect){
+                WalletConnect().then((res) => {
+                    setWalletAddress(res);
+                });
+                if (address) {
+                    if (!contracts['daoFactoryContract']) {
+                        setContracts(prevState => ({
+                            ...prevState,
+                            daoFactoryContract: BindContract(FACTORY_JSON["abi"], DAO_ADDRESS)
+                        }))
+                    } else {
+                        if (!contracts['daoContract']) {
+                            DaoIsExist(address).then((res) => {
+                                if (!res) {
+                                    setAlert(Error("DAO does not exist"))
+                                } else {
+                                    setContracts(prevState => ({
+                                        ...prevState,
+                                        daoContract: BindContract(DAO_JSON["abi"], address)
+                                    }))
+                                }
+                                contracts['daoFactoryContract'].methods.num_children(String(address)).call().then((result) =>
+                                    setDaoInfo(prevState => ({
+                                        ...prevState,
+                                        num_children: result
+                                    }))).catch((err) => setAlert(err))
+                            })
                         } else {
-                            setContracts(prevState => ({
+                            contracts['daoContract'].methods.dao_name().call().then((result) => setDaoInfo(prevState => ({
                                 ...prevState,
-                                daoContract: BindContract(DAO_JSON["abi"], address)
-                            }))
+                                name: result
+                            }))).catch((err) => setAlert(err));
+                            contracts['daoContract'].methods.dao_description().call().then((result) => setDaoInfo(prevState => ({
+                                ...prevState,
+                                description: result
+                            }))).catch((err) => setAlert(err));
+                            contracts['daoContract'].methods.getProposalName().call().then((result) => setDaoInfo(prevState => ({
+                                ...prevState,
+                                total_proposals: result.length
+                            }))).catch((err) => setAlert(err));
+                            contracts['daoContract'].methods.yk_token().call().then((result) => setContracts(prevState => ({
+                                ...prevState,
+                                ykTokenContract: BindContract(TOKEN_JSON["abi"], result)
+                            }))).catch((err) => setAlert(err));
+                            contracts['daoContract'].methods.voter_token().call().then((result) => setContracts(prevState => ({
+                                ...prevState,
+                                voterTokenContract: BindContract(TOKEN_JSON["abi"], result)
+                            }))).catch((err) => setAlert(err));
+                            setInitialized(true)
                         }
-                        contracts['daoFactoryContract'].methods.num_children(String(address)).call().then((result) =>
-                            setDaoInfo(prevState => ({
-                                ...prevState,
-                                num_children: result
-                            }))).catch((err) => setAlert(err))
-                    })
-                } else {
-                    contracts['daoContract'].methods.dao_name().call().then((result) => setDaoInfo(prevState => ({
-                        ...prevState,
-                        name: result
-                    }))).catch((err) => setAlert(err));
-                    contracts['daoContract'].methods.dao_description().call().then((result) => setDaoInfo(prevState => ({
-                        ...prevState,
-                        description: result
-                    }))).catch((err) => setAlert(err));
-                    contracts['daoContract'].methods.getProposalName().call().then((result) => setDaoInfo(prevState => ({
-                        ...prevState,
-                        total_proposals: result.length
-                    }))).catch((err) => setAlert(err));
-                    contracts['daoContract'].methods.yk_token().call().then((result) => setContracts(prevState => ({
-                        ...prevState,
-                        ykTokenContract: BindContract(TOKEN_JSON["abi"], result)
-                    }))).catch((err) => setAlert(err));
-                    contracts['daoContract'].methods.voter_token().call().then((result) => setContracts(prevState => ({
-                        ...prevState,
-                        voterTokenContract: BindContract(TOKEN_JSON["abi"], result)
-                    }))).catch((err) => setAlert(err));
-                    setInitialized(true)
+                    }
                 }
             }
         }
-    }, [address, contracts])
+    }, [address, contracts, initialized, isCorrect])
 
     //address_given is the address of the DAO
     //this function is used to get the name of the DAO
