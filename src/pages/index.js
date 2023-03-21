@@ -29,30 +29,26 @@ export default function Home() {
     const [loaded, setLoaded] = useState(false); //to check if the page is loaded, i.e. all the DAOs are fetched from the blockchain
 
     useEffect(() => {
-            if (window.window.ethereum.networkVersion !== CHAIN_ID) {
-                console.log(window.window.ethereum.networkVersion)
-                NetworkControl().then(()=>setLoaded(false))
-            } else {
-                if (!loaded) {
-                    WalletConnect().then((res) => {
-                        setAccount(res);
-                    });
-                    if (!daoFactoryContract) {
-                        setDaoFactoryContract(BindContract(FACTORY_JSON["abi"], DAO_ADDRESS));
+            if (!loaded) {
+                WalletConnect().then((res) => {
+                    setAccount(res);
+                });
+                if (!daoFactoryContract) {
+                    setDaoFactoryContract(BindContract(FACTORY_JSON["abi"], DAO_ADDRESS));
+                } else {
+                    let res;
+                    if (all_daos.length === 0) {
+                        fetchAllDaos(daoFactoryContract).then((result) => setall_daos(result))
                     } else {
-                        let res;
-                        if (all_daos.length === 0) {
-                            fetchAllDaos(daoFactoryContract).then((result) => setall_daos(result))
-                        } else {
-                            console.log(all_daos)
-                            setLoaded(true)
-                        }
+                        console.log(all_daos)
+                        setLoaded(true)
                     }
                 }
             }
+
         }
         ,
-        [daoFactoryContract, all_daos, isCorrect, loaded]
+        [daoFactoryContract, all_daos, loaded]
     )
 
 

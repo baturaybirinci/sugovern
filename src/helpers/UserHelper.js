@@ -31,7 +31,7 @@ async function NetworkControl() {
 }
 
 async function WalletConnect() {
-    await NetworkControl()
+    // await NetworkControl()
     let ret;
     if (window.ethereum) {
         await window.ethereum
