@@ -25,7 +25,7 @@ export default function Home() {
     const [all_daos, setall_daos] = useState([]); //to store all the DAOs created by the DAOFactory contract
     const [topDAOAddress, setTopDAOAddress] = useState(""); //to store the address of the top DAO
     const [isCorrect, setIsCorrect] = useState(false); //this is used to change between the tabs, we will set it when a user clicks on the buttons on the sidebar, in default it is set to 10, which is the view proposals tab
-
+    const [inp, setInp] = useState('https://avatars.githubusercontent.com/u/48164025?v=4'); //this is used to change between the tabs, we will set it when a user clicks on the buttons on the sidebar, in default it is set to 10, which is the view proposals tab
     const [loaded, setLoaded] = useState(false); //to check if the page is loaded, i.e. all the DAOs are fetched from the blockchain
 
     useEffect(() => {
@@ -40,7 +40,6 @@ export default function Home() {
                     if (all_daos.length === 0) {
                         fetchAllDaos(daoFactoryContract).then((result) => setall_daos(result))
                     } else {
-                        console.log(all_daos)
                         setLoaded(true)
                     }
                 }
@@ -50,6 +49,11 @@ export default function Home() {
         ,
         [daoFactoryContract, all_daos, loaded]
     )
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log(e.target[0].value);
+        setInp((e.target[0].value))
+    }
 
 
     return (
@@ -60,6 +64,7 @@ export default function Home() {
             </Head>
             <Header logged={account}/>
             <div className="index-page">
+
                 {!loaded ? (
                     <Spinner></Spinner>
                 ) : (

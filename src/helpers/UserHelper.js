@@ -124,7 +124,6 @@ async function fetchAllDaos(contract) {
                     daoDescription = result;
                 })
             allDaos.push([daoAddress, daoName, daoDescription]);
-            console.log([daoAddress, daoName, daoDescription])
         }
     }
     return allDaos;

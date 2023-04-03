@@ -85,27 +85,29 @@ export default function Dao() {
                             }))).catch((err) => setAlert(err))
                     })
                 } else {
-                    contracts['daoContract'].methods.dao_name().call().then((result) => setDaoInfo(prevState => ({
-                        ...prevState,
-                        name: result
-                    }))).catch((err) => setAlert(err));
-                    contracts['daoContract'].methods.dao_description().call().then((result) => setDaoInfo(prevState => ({
-                        ...prevState,
-                        description: result
-                    }))).catch((err) => setAlert(err));
-                    contracts['daoContract'].methods.getProposalName().call().then((result) => setDaoInfo(prevState => ({
-                        ...prevState,
-                        total_proposals: result.length
-                    }))).catch((err) => setAlert(err));
-                    contracts['daoContract'].methods.yk_token().call().then((result) => setContracts(prevState => ({
-                        ...prevState,
-                        ykTokenContract: BindContract(TOKEN_JSON["abi"], result)
-                    }))).catch((err) => setAlert(err));
-                    contracts['daoContract'].methods.voter_token().call().then((result) => setContracts(prevState => ({
-                        ...prevState,
-                        voterTokenContract: BindContract(TOKEN_JSON["abi"], result)
-                    }))).catch((err) => setAlert(err));
-                    setInitialized(true)
+                    if(!initialized){
+                        contracts['daoContract'].methods.dao_name().call().then((result) => setDaoInfo(prevState => ({
+                            ...prevState,
+                            name: result
+                        }))).catch((err) => setAlert(err));
+                        contracts['daoContract'].methods.dao_description().call().then((result) => setDaoInfo(prevState => ({
+                            ...prevState,
+                            description: result
+                        }))).catch((err) => setAlert(err));
+                        contracts['daoContract'].methods.getProposalName().call().then((result) => setDaoInfo(prevState => ({
+                            ...prevState,
+                            total_proposals: result.length
+                        }))).catch((err) => setAlert(err));
+                        contracts['daoContract'].methods.yk_token().call().then((result) => setContracts(prevState => ({
+                            ...prevState,
+                            ykTokenContract: BindContract(TOKEN_JSON["abi"], result)
+                        }))).catch((err) => setAlert(err));
+                        contracts['daoContract'].methods.voter_token().call().then((result) => setContracts(prevState => ({
+                            ...prevState,
+                            voterTokenContract: BindContract(TOKEN_JSON["abi"], result)
+                        }))).catch((err) => setAlert(err));
+                        setInitialized(true)
+                    }
                 }
             }
         }
