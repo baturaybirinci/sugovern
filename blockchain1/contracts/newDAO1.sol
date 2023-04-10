@@ -11,6 +11,7 @@ contract MyDAO {
     string public dao_name;
     string public dao_description;
     string[] public debug_array;
+    string public imageUrl;
     uint256 dao_id;
     enum VotingOptions { Yes, No }
     enum Status     { Accepted, Rejected, Pending }
@@ -68,14 +69,14 @@ contract MyDAO {
     
     mapping(address => bool) transferLock;
 
-    constructor(string memory _dao_name, string memory _dao_description,uint _dao_id, address first_yk, ISUToken yk_token_in, ISUToken voter_token_in, DAOFactory _factory) {
+    constructor(string memory _dao_name, string memory _imageUrl, string memory _dao_description,uint _dao_id, address first_yk, ISUToken yk_token_in, ISUToken voter_token_in, DAOFactory _factory) {
         factory = _factory;
         dao_name = _dao_name;
         dao_id=_dao_id;
         dao_description = _dao_description;
         yk_token = yk_token_in; // AVAX address
         voter_token = voter_token_in;
-
+        imageUrl = _imageUrl;
         //maybe mintabele amount can be taken as an input and 1000 yerine konabilir
         yk_shares_to_be_given[first_yk] += (1 * 10 ** 18);
         
@@ -194,6 +195,9 @@ contract MyDAO {
     function createProposal(string memory name,string memory description, string[] memory _options, uint256[] memory _options_num, uint256 _power, uint256 _type) external {
         // validate the user has enough shares to create a proposal
         //require(yk_token.balanceOf(msg.sender) >= CREATE_PROPOSAL_MIN_SHARE, 'Not enough shares to create a proposal');
+        if (vote_power == 0){
+            vote_power == 1
+        }
         require(has_yk_priviliges(msg.sender), 'Not enough shares to create a proposal');
         string memory proposal_type;
         //sorun olursa buradan
