@@ -1,7 +1,7 @@
-import { redirect } from "next/dist/server/api-utils";
-import React, { Component, useState } from "react";
-import Button from "./Button";
-function Sidebar({setSelectedNavItem, selectedNavItem}) {
+import { redirect } from "next/dist/server/api-utils"
+import React, { Component, useState } from "react"
+import Button from "./Button"
+function Sidebar({ setSelectedNavItem, selectedNavItem }) {
   return (
     <div className="sidebar">
       <ul className="nav flex-column my-2">
@@ -10,10 +10,12 @@ function Sidebar({setSelectedNavItem, selectedNavItem}) {
         </li>
         <li className="nav-item">
           <p
-            className={selectedNavItem === 0 ?  "nav-link text-secondary" : "nav-link"}
+            className={
+              selectedNavItem === 0 ? "nav-link text-secondary" : "nav-link"
+            }
             style={{ cursor: "pointer" }}
             onClick={() => {
-              setSelectedNavItem(0);
+              setSelectedNavItem(0)
             }}
           >
             Create a SubDAO
@@ -21,10 +23,12 @@ function Sidebar({setSelectedNavItem, selectedNavItem}) {
         </li>
         <li className="nav-item">
           <p
-            className={selectedNavItem === 1 ?  "nav-link text-secondary" : "nav-link"}
+            className={
+              selectedNavItem === 1 ? "nav-link text-secondary" : "nav-link"
+            }
             style={{ cursor: "pointer" }}
             onClick={() => {
-              setSelectedNavItem(1);
+              setSelectedNavItem(1)
             }}
           >
             Assign a New YK
@@ -32,10 +36,12 @@ function Sidebar({setSelectedNavItem, selectedNavItem}) {
         </li>
         <li className="nav-item">
           <p
-            className={selectedNavItem === 2 ?  "nav-link text-secondary" : "nav-link"}
+            className={
+              selectedNavItem === 2 ? "nav-link text-secondary" : "nav-link"
+            }
             style={{ cursor: "pointer" }}
             onClick={() => {
-              setSelectedNavItem(2);
+              setSelectedNavItem(2)
             }}
           >
             ClawBack Tokens
@@ -43,10 +49,12 @@ function Sidebar({setSelectedNavItem, selectedNavItem}) {
         </li>
         <li className="nav-item">
           <p
-            className={selectedNavItem === 3 ?  "nav-link text-secondary" : "nav-link"}
+            className={
+              selectedNavItem === 3 ? "nav-link text-secondary" : "nav-link"
+            }
             style={{ cursor: "pointer" }}
             onClick={() => {
-              setSelectedNavItem(3);
+              setSelectedNavItem(3)
             }}
           >
             Send Voter Token
@@ -54,10 +62,12 @@ function Sidebar({setSelectedNavItem, selectedNavItem}) {
         </li>
         <li className="nav-item">
           <p
-            className={selectedNavItem === 4 ?  "nav-link text-secondary" : "nav-link"}
+            className={
+              selectedNavItem === 4 ? "nav-link text-secondary" : "nav-link"
+            }
             style={{ cursor: "pointer" }}
             onClick={() => {
-              setSelectedNavItem(4);
+              setSelectedNavItem(4)
             }}
           >
             Create New Proposal
@@ -65,10 +75,12 @@ function Sidebar({setSelectedNavItem, selectedNavItem}) {
         </li>
         <li className="nav-item">
           <p
-            className={selectedNavItem === 5 ?  "nav-link text-secondary" : "nav-link"}
+            className={
+              selectedNavItem === 5 ? "nav-link text-secondary" : "nav-link"
+            }
             style={{ cursor: "pointer" }}
             onClick={() => {
-              setSelectedNavItem(5);
+              setSelectedNavItem(5)
             }}
           >
             Delete DAO
@@ -83,10 +95,12 @@ function Sidebar({setSelectedNavItem, selectedNavItem}) {
         </li>
         <li className="nav-item">
           <p
-            className={selectedNavItem === 12 ?  "nav-link text-secondary" : "nav-link"}
+            className={
+              selectedNavItem === 12 ? "nav-link text-secondary" : "nav-link"
+            }
             style={{ cursor: "pointer" }}
             onClick={() => {
-              setSelectedNavItem(12);
+              setSelectedNavItem(12)
             }}
           >
             Transfer Tokens
@@ -94,10 +108,12 @@ function Sidebar({setSelectedNavItem, selectedNavItem}) {
         </li>
         <li className="nav-item">
           <p
-            className={selectedNavItem === 6 ?  "nav-link text-secondary" : "nav-link"}
+            className={
+              selectedNavItem === 6 ? "nav-link text-secondary" : "nav-link"
+            }
             style={{ cursor: "pointer" }}
             onClick={() => {
-              setSelectedNavItem(6);
+              setSelectedNavItem(6)
             }}
           >
             Check My Tokens
@@ -105,10 +121,12 @@ function Sidebar({setSelectedNavItem, selectedNavItem}) {
         </li>
         <li className="nav-item">
           <p
-            className={selectedNavItem === 7 ?  "nav-link text-secondary" : "nav-link"}
+            className={
+              selectedNavItem === 7 ? "nav-link text-secondary" : "nav-link"
+            }
             style={{ cursor: "pointer" }}
             onClick={() => {
-              setSelectedNavItem(7);
+              setSelectedNavItem(7)
             }}
           >
             Withdraw Tokens
@@ -116,10 +134,12 @@ function Sidebar({setSelectedNavItem, selectedNavItem}) {
         </li>
         <li className="nav-item">
           <p
-            className={selectedNavItem === 8 ?  "nav-link text-secondary" : "nav-link"}
+            className={
+              selectedNavItem === 8 ? "nav-link text-secondary" : "nav-link"
+            }
             style={{ cursor: "pointer" }}
             onClick={() => {
-              setSelectedNavItem(8);
+              setSelectedNavItem(8)
             }}
           >
             Delegate Tokens
@@ -134,17 +154,19 @@ function Sidebar({setSelectedNavItem, selectedNavItem}) {
         </li>
         <li className="nav-item">
           <p
-            className={selectedNavItem === 9 ?  "nav-link text-secondary" : "nav-link"}
+            className={
+              selectedNavItem === 9 ? "nav-link text-secondary" : "nav-link"
+            }
             style={{ cursor: "pointer" }}
             onClick={() => {
-              setSelectedNavItem(9);
+              setSelectedNavItem(9)
             }}
           >
             Vote on Proposals
           </p>
         </li>
       </ul>
-      <br />
+      {/* <br />
       <br />
       <ul className="nav flex-column my-2">
         <li className="nav-item">
@@ -152,10 +174,12 @@ function Sidebar({setSelectedNavItem, selectedNavItem}) {
         </li>
         <li className="nav-item">
           <p
-            className={selectedNavItem === 10 ?  "nav-link text-secondary" : "nav-link"}
+            className={
+              selectedNavItem === 10 ? "nav-link text-secondary" : "nav-link"
+            }
             style={{ cursor: "pointer" }}
             onClick={() => {
-              setSelectedNavItem(10);
+              setSelectedNavItem(10)
             }}
           >
             View Proposals
@@ -163,19 +187,21 @@ function Sidebar({setSelectedNavItem, selectedNavItem}) {
         </li>
         <li className="nav-item">
           <p
-            className={selectedNavItem === 11 ?  "nav-link text-secondary" : "nav-link"}
+            className={
+              selectedNavItem === 11 ? "nav-link text-secondary" : "nav-link"
+            }
             style={{ cursor: "pointer" }}
             onClick={() => {
-              setSelectedNavItem(11);
+              setSelectedNavItem(11)
             }}
           >
             View SubDAOs
           </p>
         </li>
-      </ul>
+      </ul> */}
       <br />
       <br />
     </div>
-  );
+  )
 }
-export default Sidebar;
+export default Sidebar
