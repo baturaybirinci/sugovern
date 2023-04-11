@@ -1,6 +1,6 @@
 import React, { Component, useState } from "react";
 
-function Card({address,index,title,text}) {
+function Card({address,index,title,text,imageUrl}) {
     return (
         <a href={address}>
             {/* className="item-card-link"  */}
@@ -11,7 +11,7 @@ function Card({address,index,title,text}) {
                 <div className="item-card">
                     <div>
                         <img
-                            src={"https://picsum.photos/200/200"}
+                            src={imageUrl}
                             alt=""
                             style={{ width: "100%", height: "25vh", objectFit: "fill" }}
                         />

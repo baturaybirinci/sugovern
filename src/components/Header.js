@@ -5,6 +5,16 @@ import Link from "next/link"
 
 function Header({ logged }) {
   const [hamburger, setHamburger] = useState(false)
+  const [account, setAccount] = useState(null)
+  const [loaded, setLoaded] = useState(false) //to check if the page is loaded, i.e. all the DAOs are fetched from the blockchain
+
+  useEffect(() => {
+    if (!loaded) {
+      WalletConnect().then((res) => {
+        setAccount(res)
+      })
+    }
+  }, [])
 
   const handleHamburger = () => {
     setHamburger(!hamburger)
@@ -27,7 +37,7 @@ function Header({ logged }) {
             </Link>
           </div>
           {logged ? (
-            <div className="Header-link Wallet"> {logged} </div>
+            <div className="Header-link Wallet"> {account} </div>
           ) : (
             // TODO: Disconnect ekle ve ikonlastir
             <div

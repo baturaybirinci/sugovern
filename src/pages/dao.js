@@ -52,6 +52,7 @@ export default function Dao() {
     total_yk_tokens: 0,
     total_proposals: 0,
     total_subdaos: 0,
+    imageUrl: "",
   }) //this is used to store the information about the DAO, we will set it in init() function, we will show it on the textbox under the DAO image
   const [popupTrigger, setPopupTrigger] = useState(false) //this is used inside Popup component, to trigger the popup when an error occurs, or a transaction is successful, or in a case of warning
   const [selectedNavItem, setSelectedNavItem] = useState(10) //this is used to change between the tabs, we will set it when a user clicks on the buttons on the sidebar, in default it is set to 10, which is the view proposals tab
@@ -117,6 +118,16 @@ export default function Dao() {
                 }))
               )
               .catch((err) => setAlert(err))
+            contracts["daoContract"].methods
+            .imageUrl()
+            .call()
+            .then((result) =>
+              setDaoInfo((prevState) => ({
+                ...prevState,
+                imageUrl: result,
+              }))
+            )
+            .catch((err) => setAlert(err))
             contracts["daoContract"].methods
               .getProposalName()
               .call()
@@ -990,8 +1001,7 @@ export default function Dao() {
         ) : (
           <div className="row mx-0">
             <Header
-              WalletConnect={WalletConnect}
-              logged={walletAddress !== undefined && walletAddress !== null}
+              logged={'0xdeneme'}
             />
             <div className="page dao-page">
               <Sidebar
@@ -1006,7 +1016,7 @@ export default function Dao() {
                       <img
                         className="card-img-top rounded-0"
                         alt="dao-image"
-                        src="https://redenom.com/info/wp-content/uploads/2018/10/redenom_cover_fb_1200x630_dao_1-1.png"
+                        src={daoInfo.imageUrl}
                       />
                       <div className="card-body">
                         <h4 className="h4 card-title text-center text-black">

@@ -101,7 +101,7 @@ async function fetchAllDaos(contract) {
     //fetch the name and description of the DAOs
     //push the DAOs to allDaos array
     for (let i = 0; i < numOfDaos; i++) {
-        let daoAddress, daoName, daoDescription;
+        let daoAddress, daoName, daoDescription,imageUrl;
         await contract.methods
             .all_daos(i)
             .call()
@@ -123,14 +123,20 @@ async function fetchAllDaos(contract) {
                 .then((result) => {
                     daoDescription = result;
                 })
-            allDaos.push([daoAddress, daoName, daoDescription]);
+            await daoContract.methods
+            .imageUrl()
+            .call()
+            .then((result) => {
+                imageUrl = result;
+            })
+            allDaos.push([daoAddress, daoName, daoDescription,imageUrl]);
         }
     }
     return allDaos;
 }
 
 async function DaoInfo(contract, address) {
-    var retVal = [0, 0, 0, 0]; // Children Num, Name, Description, Proposal Names
+    var retVal = [0, 0, 0, 0,0]; // Children Num, Name, Description, Proposal Names,img
     contract.methods.num_children(String(address)).call().then((result) => {
         retVal[0] = result
     })
@@ -143,6 +149,10 @@ async function DaoInfo(contract, address) {
     contract.methods.getProposalName().call().then((result) => {
         retVal[3] = result
     })
+    contract.methods.imageUrl().call().then((result) => {
+        retVal[4] = result
+    })
+
     return retVal;
 }
 
