@@ -29,6 +29,7 @@ a {
 
 }
 .sidebar{
+  position: absolute;
   width: 20vw;
   min-width: 14vw;
 }

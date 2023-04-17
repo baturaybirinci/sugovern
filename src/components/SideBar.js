@@ -2,7 +2,7 @@ import { redirect } from "next/dist/server/api-utils"
 import React, { Component, useState } from "react"
 import Button from "./Button"
 function Sidebar({ setSelectedNavItem, selectedNavItem, status }) {
-  status = 'admin'
+  console.log(status)
   return (
     (status === 'member'  || status === 'admin')?
     <div className="sidebar">
@@ -167,41 +167,6 @@ function Sidebar({ setSelectedNavItem, selectedNavItem, status }) {
 
       </ul>
 : <div></div>}
-      {/* <br />
-      <br />
-      <ul className="nav flex-column my-2">
-        <li className="nav-item">
-          <h2 className="nav-link text-black">Non-Member Functions</h2>
-        </li>
-        <li className="nav-item">
-          <p
-            className={
-              selectedNavItem === 10 ? "nav-link text-secondary" : "nav-link"
-            }
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              setSelectedNavItem(10)
-            }}
-          >
-            View Proposals
-          </p>
-        </li>
-        <li className="nav-item">
-          <p
-            className={
-              selectedNavItem === 11 ? "nav-link text-secondary" : "nav-link"
-            }
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              setSelectedNavItem(11)
-            }}
-          >
-            View SubDAOs
-          </p>
-        </li>
-      </ul> */}
-      <br />
-      <br />
     </div> : <div></div>
   )
 }

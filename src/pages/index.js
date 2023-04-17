@@ -43,6 +43,7 @@ export default function Home() {
       } else {
         let res
         if (all_daos.length === 0) {
+          console.log(daoFactoryContract)
           fetchAllDaos(daoFactoryContract).then((result) => setall_daos(result))
         } else {
           setLoaded(true)

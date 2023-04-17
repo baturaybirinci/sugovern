@@ -57,7 +57,8 @@ export default function Dao() {
   const [popupTrigger, setPopupTrigger] = useState(false) //this is used inside Popup component, to trigger the popup when an error occurs, or a transaction is successful, or in a case of warning
   const [selectedNavItem, setSelectedNavItem] = useState(10) //this is used to change between the tabs, we will set it when a user clicks on the buttons on the sidebar, in default it is set to 10, which is the view proposals tab
   const [isCorrect, setIsCorrect] = useState(false) //this is used to change between the tabs, we will set it when a user clicks on the buttons on the sidebar, in default it is set to 10, which is the view proposals tab
-
+  const [ykBalance, setYkBalance] = useState(0)
+  const [voterBalance, setVoterBalance] = useState(0)
   //these are the data of the contracts that, we will use them in init() function
   //we will take the abi of the contracts from these files, and we will take the address of the contracts from the URL
   const setAlert = (err) => {
@@ -148,6 +149,7 @@ export default function Dao() {
                 }))
               )
               .catch((err) => setAlert(err))
+            
             contracts["daoContract"].methods
               .voter_token()
               .call()
@@ -158,12 +160,29 @@ export default function Dao() {
                 }))
               )
               .catch((err) => setAlert(err))
-            setInitialized(true)
+            if(contracts['voterTokenContract'] && contracts['ykTokenContract']){
+              contracts['ykTokenContract'].methods
+                  .balanceOf(String(walletAddress))
+                  .call()
+                  .then((result) =>
+                      setYkBalance(parseInt(parseInt(result) / Math.pow(10, 18)))
+                  )
+                  .catch((err) => setAlert(err))
+              contracts.voterTokenContract.methods
+                  .balanceOf(String(walletAddress))
+                  .call()
+                  .then((result) => {
+                    setVoterBalance(parseInt(parseInt(result) / Math.pow(10, 18)))
+                  })
+                  .catch((err) => setAlert(err))
+              setInitialized(true)
+
+            }
           }
         }
       }
     }
-  }, [address, contracts, initialized])
+  }, [address, contracts, initialized, walletAddress])
 
   //address_given is the address of the DAO
   //this function is used to get the name of the DAO
@@ -455,20 +474,7 @@ export default function Dao() {
   }
 
   //get voter balance from the voter token contract
-  const getVoterBalance = async () => {
-    if (!contracts.voterTokenContract) {
-      await voterTokenAdd()
-    }
-    let voterBalance
-    await contracts.voterTokenContract.methods
-      .balanceOf(String(walletAddress))
-      .call()
-      .then((result) => {
-        voterBalance = parseInt(parseInt(result) / Math.pow(10, 18))
-      })
-      .catch((err) => setAlert(err))
-    return voterBalance
-  }
+
 
   //transfer voter tokens of given amount to another address, passed into TransferTokens.js tab
   //tokens are sent from the wallet address to the given address (peer to peer transfer)
@@ -476,9 +482,6 @@ export default function Dao() {
     //add 18 zeros to the end of the amount to convert it from wei
     let zero = "0"
     setTransactionInProgress(true)
-    if (!contracts.voterTokenContract) {
-      await voterTokenAdd()
-    }
     await contracts.voterTokenContract.methods
       .transfer(String(address), String(amount) + zero.repeat(18))
       .send({
@@ -522,23 +525,6 @@ export default function Dao() {
   }
 
   //get YK balance from the YK token contract
-  const getYKBalance = async () => {
-    if (!initialized) {
-      await init()
-    }
-    let ykBalance
-    if (!contracts.ykTokenContract) {
-      await ykTokenAdd()
-    }
-    await contracts.ykTokenContract.methods
-      .balanceOf(String(walletAddress))
-      .call()
-      .then((result) => {
-        ykBalance = parseInt(parseInt(result) / Math.pow(10, 18))
-      })
-      .catch((err) => setAlert(err))
-    return ykBalance
-  }
 
   //get child DAOs of the current DAO
   const getSubDAOs = async () => {
@@ -942,8 +928,8 @@ export default function Dao() {
       <DeleteDAO onDeleteDAO={deleteThisDAO}></DeleteDAO>
     ) : selectedNavItem === 6 ? (
       <CheckMyTokens
-        onCheckYKBalance={getYKBalance}
-        onCheckVoterBalance={getVoterBalance}
+          _ykBalance={ykBalance}
+        _voterBalance={voterBalance}
       ></CheckMyTokens>
     ) : selectedNavItem === 7 ? (
       <WithdrawTokens
@@ -963,7 +949,7 @@ export default function Dao() {
       ></Delegate>
     ) : selectedNavItem === 9 ? (
       <VoteOnProposals
-        onGetVoterTokenBalance={getVoterBalance}
+          _voterBalance={voterBalance}
         onVoteOnNormalProposals={voteOnNormalProposal}
         onVoteOnWeightedProposals={voteOnWeightedProposal}
         onGetAllProposals={getAllProposals}
@@ -981,14 +967,11 @@ export default function Dao() {
       <TransferTokens
         onTransferVoterTokens={transferVoterTokens}
         onTransferYKTokens={transferYKTokens}
-        onGetVoterBalance={getVoterBalance}
-        onGetYKBalance={getYKBalance}
       ></TransferTokens>
     ) : (
       <></>
     )
   }
-
   return (
     <div className={styles.main}>
       <Head>
@@ -1007,6 +990,7 @@ export default function Dao() {
               <Sidebar
                 setSelectedNavItem={setSelectedNavItem}
                 selectedNavItem={selectedNavItem}
+                status={ykBalance > 0 ? "admin":voterBalance > 0 ? "member":'none'}
               />
               <div className="container" style={{ padding: "30px" }}>
                 <div className="row">

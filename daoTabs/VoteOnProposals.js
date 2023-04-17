@@ -21,7 +21,7 @@ const TextBoxDescription = styled.div`
     font-size: 1.0em;
 `;
 
-const VoteOnProposals = ({onGetAllProposals, onVoteOnNormalProposals, onVoteOnWeightedProposals, onGetVoterTokenBalance}) => {
+const VoteOnProposals = ({onGetAllProposals, onVoteOnNormalProposals, onVoteOnWeightedProposals, _voterBalance}) => {
 
     const [all_props, setall_props]=useState([])
     const [loaded, setLoaded]=useState(false)
@@ -33,7 +33,7 @@ const VoteOnProposals = ({onGetAllProposals, onVoteOnNormalProposals, onVoteOnWe
         const get_all_proposals = async () => {
             try {
                 const proposals = await onGetAllProposals();
-                const voterTokenBalance = await onGetVoterTokenBalance();
+                const voterTokenBalance = _voterBalance;
                 setamountOfVoterTokens(voterTokenBalance);
                 setall_props(proposals);
                 setcurrAmountOfVotes(setcurrVotesArrayInitialize(proposals));

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRef } from "react";
 
-const TransferTokens = ({onTransferVoterTokens, onTransferYKTokens, onGetVoterBalance, onGetYKBalance}) => {
+const TransferTokens = ({onTransferVoterTokens, onTransferYKTokens}) => {
     const info = useRef({addressYK: "", amountYK: 0, addressVoter: "", amountVoter: 0});
     return (
     <div className="row my-2">

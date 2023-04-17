@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import {DAO_ADDRESS, DAO_JSON, FACTORY_JSON} from "../../constant";
+import {DAO_ADDRESS, DAO_JSON, FACTORY_JSON,params} from "../../constant";
 
 
 async function NetworkControl() {
@@ -30,20 +30,56 @@ async function NetworkControl() {
     }
 }
 
+async function addNetworkToMetamask() {
+    try {
+        await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [params[0]],
+        });
+        console.log('Network added to MetaMask');
+    } catch (error) {
+        console.error('Error adding network to MetaMask:', error);
+    }
+}
+
 async function WalletConnect() {
-    // await NetworkControl()
-    let ret;
-    if (window.ethereum) {
-        await window.ethereum
-            .request({method: "eth_requestAccounts"})
-            .then((accounts) => {
-                ret = accounts[0];
+    let account = null;
+
+    if (typeof window.ethereum !== 'undefined') {
+        try {
+            const accounts = await window.ethereum.request({method: 'eth_requestAccounts'});
+            account = accounts[0];
+
+            const chainId = await window.ethereum.request({method: 'eth_chainId'});
+
+            if (chainId !== params[0].chainId) {
+                console.log('Adding the required network to MetaMask');
+                await addNetworkToMetamask();
+            }
+
+            window.ethereum.on('chainChanged', async () => {
+                const updatedChainId = await window.ethereum.request({method: 'eth_chainId'});
+                if (updatedChainId !== params[0].chainId) {
+                    console.log('Adding the required network to MetaMask');
+                    await addNetworkToMetamask();
+                }
             });
+
+            window.ethereum.on('accountsChanged', (newAccounts) => {
+                account = newAccounts[0];
+                console.log('Account changed:', account);
+            });
+
+        } catch (error) {
+            console.error('Error connecting to MetaMask:', error);
+        }
+    } else {
+        console.error('MetaMask not detected. Please install MetaMask extension.');
     }
 
-    return ret;
-
+    return account;
 }
+
 
 async function DaoIsExist(address) {
     const web3 = new Web3(window.ethereum)
