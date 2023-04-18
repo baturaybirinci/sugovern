@@ -32,7 +32,7 @@ function Header({ logged }) {
             <Link href="/projects" className="Header-link">
               Projects
             </Link>
-            <Link className="Header-link" href="/docs">
+            <Link className="Header-link" href="https://erdogduemir.github.io/sugovern/connecting-wallet-address-to-user/">
               Wiki
             </Link>
           </div>
