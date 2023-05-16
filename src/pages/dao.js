@@ -120,15 +120,15 @@ export default function Dao() {
               )
               .catch((err) => setAlert(err))
             contracts["daoContract"].methods
-            .imageUrl()
-            .call()
-            .then((result) =>
-              setDaoInfo((prevState) => ({
-                ...prevState,
-                imageUrl: result,
-              }))
-            )
-            .catch((err) => setAlert(err))
+              .imageUrl()
+              .call()
+              .then((result) =>
+                setDaoInfo((prevState) => ({
+                  ...prevState,
+                  imageUrl: result,
+                }))
+              )
+              .catch((err) => setAlert(err))
             contracts["daoContract"].methods
               .getProposalName()
               .call()
@@ -149,7 +149,7 @@ export default function Dao() {
                 }))
               )
               .catch((err) => setAlert(err))
-            
+
             contracts["daoContract"].methods
               .voter_token()
               .call()
@@ -160,23 +160,25 @@ export default function Dao() {
                 }))
               )
               .catch((err) => setAlert(err))
-            if(contracts['voterTokenContract'] && contracts['ykTokenContract']){
-              contracts['ykTokenContract'].methods
-                  .balanceOf(String(walletAddress))
-                  .call()
-                  .then((result) =>
-                      setYkBalance(parseInt(parseInt(result) / Math.pow(10, 18)))
-                  )
-                  .catch((err) => setAlert(err))
+            if (
+              contracts["voterTokenContract"] &&
+              contracts["ykTokenContract"]
+            ) {
+              contracts["ykTokenContract"].methods
+                .balanceOf(String(walletAddress))
+                .call()
+                .then((result) =>
+                  setYkBalance(parseInt(parseInt(result) / Math.pow(10, 18)))
+                )
+                .catch((err) => setAlert(err))
               contracts.voterTokenContract.methods
-                  .balanceOf(String(walletAddress))
-                  .call()
-                  .then((result) => {
-                    setVoterBalance(parseInt(parseInt(result) / Math.pow(10, 18)))
-                  })
-                  .catch((err) => setAlert(err))
+                .balanceOf(String(walletAddress))
+                .call()
+                .then((result) => {
+                  setVoterBalance(parseInt(parseInt(result) / Math.pow(10, 18)))
+                })
+                .catch((err) => setAlert(err))
               setInitialized(true)
-
             }
           }
         }
@@ -474,7 +476,6 @@ export default function Dao() {
   }
 
   //get voter balance from the voter token contract
-
 
   //transfer voter tokens of given amount to another address, passed into TransferTokens.js tab
   //tokens are sent from the wallet address to the given address (peer to peer transfer)
@@ -928,7 +929,7 @@ export default function Dao() {
       <DeleteDAO onDeleteDAO={deleteThisDAO}></DeleteDAO>
     ) : selectedNavItem === 6 ? (
       <CheckMyTokens
-          _ykBalance={ykBalance}
+        _ykBalance={ykBalance}
         _voterBalance={voterBalance}
       ></CheckMyTokens>
     ) : selectedNavItem === 7 ? (
@@ -949,7 +950,7 @@ export default function Dao() {
       ></Delegate>
     ) : selectedNavItem === 9 ? (
       <VoteOnProposals
-          _voterBalance={voterBalance}
+        _voterBalance={voterBalance}
         onVoteOnNormalProposals={voteOnNormalProposal}
         onVoteOnWeightedProposals={voteOnWeightedProposal}
         onGetAllProposals={getAllProposals}
@@ -983,14 +984,14 @@ export default function Dao() {
           <Spinner></Spinner>
         ) : (
           <div className="row mx-0">
-            <Header
-              logged={'0xdeneme'}
-            />
+            <Header logged={"0xdeneme"} />
             <div className="page dao-page">
               <Sidebar
                 setSelectedNavItem={setSelectedNavItem}
                 selectedNavItem={selectedNavItem}
-                status={ykBalance > 0 ? "admin":voterBalance > 0 ? "member":'none'}
+                status={
+                  ykBalance > 0 ? "admin" : voterBalance > 0 ? "member" : "none"
+                }
               />
               <div className="container" style={{ padding: "30px" }}>
                 <div className="row">
@@ -1050,9 +1051,11 @@ export default function Dao() {
                   </div>
                   <div className="col-xl-4 col-lg-3 col-md-2 col-sm-1 col-xs-1"></div>
                 </div>
-                <div className="row mt-5">
-                  {transactionInProgress ? <LockScreen></LockScreen> : <></>}
-                  {getHTMLBody()}
+                <div style={{ width: "60vw", margin: "auto" }}>
+                  <div className="row mt-5">
+                    {transactionInProgress ? <LockScreen></LockScreen> : <></>}
+                    {getHTMLBody()}
+                  </div>
                 </div>
               </div>
             </div>
