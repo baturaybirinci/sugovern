@@ -1016,10 +1016,7 @@ export default function Dao() {
                             {daoInfo.description}
                           </small>
                         </p>
-                        <div>
-                          {/* <small className="text-muted">
-                            {daoInfo.num_children} subDAOs
-                          </small> */}
+                        <div className="d-flex justify-content-between">
                           <button
                             type="button"
                             class="btn btn-outline-primary"
@@ -1030,11 +1027,6 @@ export default function Dao() {
                           >
                             {daoInfo.num_children} subDAOs
                           </button>
-                          {/* </p>
-                        <p className="card-text"> */}
-                          {/* <small className="text-muted">
-                            {daoInfo.total_proposals} proposals created
-                          </small> */}
                           <button
                             type="button"
                             class="btn btn-outline-primary"

@@ -28,12 +28,29 @@ function Header({ logged }) {
           <Link href="/" className="Header-logo">
             SUGovern
           </Link>
+          <div className="Header-links"></div>
+          <div className="Header-links"></div>
+          <div className="Header-links"></div>
+          <div className="Header-links"></div>
+          <div className="Header-links"></div>
+          <div className="Header-links"></div>
+          <div className="Header-links"></div>
+          <div className="Header-links"></div>
+
           <div className="Header-links">
-            <Link href="/projects" className="Header-link">
-              Projects
+            <Link
+              className="Header-link"
+              href="https://sugovern.github.io/sugovern-user-docs/what-is-sugovern/"
+            >
+              User Docs
             </Link>
-            <Link className="Header-link" href="https://erdogduemir.github.io/sugovern/connecting-wallet-address-to-user/">
-              Wiki
+          </div>
+          <div className="Header-links">
+            <Link
+              className="Header-link"
+              href="https://sugovern.github.io/sugovern-dev-docs/what-is-sugovern/"
+            >
+              Dev Docs
             </Link>
           </div>
           {logged ? (
@@ -45,7 +62,7 @@ function Header({ logged }) {
               style={{ cursor: "pointer" }}
               onClick={WalletConnect}
             >
-              Wallet Connect
+              Connect Wallet
             </div>
           )}
         </div>
