@@ -20,7 +20,7 @@ const CreateChildDAO = ({onCreateChildDAO}) => {
             <br/>
             <div className="form-group">
                 <label htmlFor="exampleInputDAODesc" className='text-dark'>DAO image</label>
-                <textarea type="name" onChange={(e) => {{daoInfo.current = {...daoInfo.current, desc: e.target.value}}}} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter DAO image"/>
+                <textarea type="name" onChange={(e) => {{daoInfo.current = {...daoInfo.current, image: e.target.value}}}} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter DAO image"/>
             </div> 
             <br/>
             <div className="form-group">

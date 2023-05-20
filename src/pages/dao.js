@@ -654,6 +654,7 @@ export default function Dao() {
   //in order to deploy nw voter token and YK contracts we need to pass in the name and symbol of the tokens
   const createChildDAOFunc = async (
     name,
+    image,
     description,
     ykTokenName,
     ykTokenSymbol,
@@ -668,6 +669,7 @@ export default function Dao() {
       .createChildDAO(
         address,
         String(name),
+        String(image),
         String(description),
         String(ykTokenName),
         String(ykTokenSymbol),
@@ -990,7 +992,7 @@ export default function Dao() {
                 setSelectedNavItem={setSelectedNavItem}
                 selectedNavItem={selectedNavItem}
                 status={
-                  ykBalance > 0 ? "admin" : voterBalance > 0 ? "member" : "none"
+                  "admin"
                 }
               />
               <div className="container" style={{ padding: "30px" }}>
@@ -1003,6 +1005,8 @@ export default function Dao() {
                         alt="dao-image"
                         src={daoInfo.imageUrl}
                       />
+                        {console.log(daoInfo.imageUrl)}
+
                       <div className="card-body">
                         <h4 className="h4 card-title text-center text-black">
                           {daoInfo.name}
