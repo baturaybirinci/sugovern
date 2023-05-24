@@ -1046,11 +1046,10 @@ export default function Dao() {
                   <div className="col-xl-4 col-lg-3 col-md-2 col-sm-1 col-xs-1"></div>
                 </div>
                 <div
-                  className="absolute"
                   style={{
-                    width: "50rem",
-                    marginLeft: "20rem",
-                    marginRight: "10rem",
+                    width: "60vw",
+                    marginLeft: "auto",
+                    marginRigh: "auto",
                   }}
                 >
                   <div className="row mt-5">

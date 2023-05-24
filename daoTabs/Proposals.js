@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
-import PieChart from '../src/components/PieChart'
-import BarChart from '../src/components/BarChart'
-import { useState } from 'react'
-import Spinner from '../src/components/Spinner'
-import styled from 'styled-components'
+import React, { useEffect } from "react"
+import PieChart from "../src/components/PieChart"
+import BarChart from "../src/components/BarChart"
+import { useState } from "react"
+import Spinner from "../src/components/Spinner"
+import styled from "styled-components"
 
 const TextBoxProposal = styled.div`
   overflow: hidden;
@@ -43,7 +43,7 @@ const Proposals = ({ onGetAllProposals }) => {
       <>
         <div
           key={index}
-          className="col-12 border border-black text-black p-5 mt-5"
+          className="col-12 border border-black text-black p-5 mt-5 m-5"
         >
           <div className="row">
             <div className="col-md">
@@ -72,7 +72,7 @@ const Proposals = ({ onGetAllProposals }) => {
             <div className="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-xs-12">
               <label>
                 {element[index][4].charAt(0).toUpperCase() +
-                  element[index][4].slice(1)}{' '}
+                  element[index][4].slice(1)}{" "}
                 proposal
               </label>
               <br />
@@ -85,11 +85,11 @@ const Proposals = ({ onGetAllProposals }) => {
                   <label htmlFor="html">
                     {keyIndex +
                       1 +
-                      ')  ' +
+                      ")  " +
                       item +
-                      '    (' +
+                      "    (" +
                       element[index][2][keyIndex] +
-                      ' votes)'}
+                      " votes)"}
                   </label>
                   <br />
                 </div>
@@ -101,16 +101,16 @@ const Proposals = ({ onGetAllProposals }) => {
                   labels: element[index][1],
                   datasets: [
                     {
-                      label: 'Votes',
+                      label: "Votes",
                       data: element[index][2],
                       backgroundColor: [
-                        'rgba(75,192,192,1)',
-                        '#ecf0f1',
-                        '#50AF95',
-                        '#f3ba2f',
-                        '#2a71d0',
+                        "rgba(75,192,192,1)",
+                        "#ecf0f1",
+                        "#50AF95",
+                        "#f3ba2f",
+                        "#2a71d0",
                       ],
-                      borderColor: 'black',
+                      borderColor: "black",
                       borderWidth: 1,
                     },
                   ],
@@ -123,16 +123,16 @@ const Proposals = ({ onGetAllProposals }) => {
                   labels: element[index][1],
                   datasets: [
                     {
-                      label: 'Votes',
+                      label: "Votes",
                       data: element[index][2],
                       backgroundColor: [
-                        'rgba(75,192,192,1)',
-                        '#ecf0f1',
-                        '#50AF95',
-                        '#f3ba2f',
-                        '#2a71d0',
+                        "rgba(75,192,192,1)",
+                        "#ecf0f1",
+                        "#50AF95",
+                        "#f3ba2f",
+                        "#2a71d0",
                       ],
-                      borderColor: 'black',
+                      borderColor: "black",
                       borderWidth: 1,
                     },
                   ],
@@ -182,7 +182,7 @@ const Proposals = ({ onGetAllProposals }) => {
       {all_proposals.map((element, index) =>
         isCollapsed[index]
           ? collapsedProposalCard(element, index)
-          : proposalCard(element, index),
+          : proposalCard(element, index)
       )}
     </div>
   )
