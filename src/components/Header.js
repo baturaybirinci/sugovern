@@ -52,7 +52,6 @@ function Header({ logged }) {
           {logged ? (
             <div className="Header-link Wallet"> {account} </div>
           ) : (
-            // TODO: Disconnect ekle ve ikonlastir
             <div
               className="Wallet"
               style={{ cursor: "pointer" }}
@@ -79,12 +78,21 @@ function Header({ logged }) {
             </div>
             <div className="Header-links-mobile">
               <div className="Header-links-mobile-links">
-                <a href="/projects" className="Header-link-mobile">
-                  Projects
+                <a
+                  href="https://sugovern.github.io/sugovern-user-docs/what-is-sugovern/"
+                  className="Header-link-mobile"
+                >
+                  User Docs
+                </a>
+                <a
+                  href="https://sugovern.github.io/sugovern-dev-docs/what-is-sugovern/"
+                  className="Header-link-mobile"
+                >
+                  Dev Docs
                 </a>
               </div>
               {logged ? (
-                <div className="Wallet">Connected</div>
+                <div className="Header-link Wallet">{account}</div>
               ) : (
                 <div className="Wallet" onClick={WalletConnect}>
                   Wallet Connect

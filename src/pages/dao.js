@@ -991,9 +991,7 @@ export default function Dao() {
               <Sidebar
                 setSelectedNavItem={setSelectedNavItem}
                 selectedNavItem={selectedNavItem}
-                status={
-                  "admin"
-                }
+                status={"admin"}
               />
               <div className="container" style={{ padding: "30px" }}>
                 <div className="row">
@@ -1005,7 +1003,7 @@ export default function Dao() {
                         alt="dao-image"
                         src={daoInfo.imageUrl}
                       />
-                        {console.log(daoInfo.imageUrl)}
+                      {console.log(daoInfo.imageUrl)}
 
                       <div className="card-body">
                         <h4 className="h4 card-title text-center text-black">
@@ -1047,7 +1045,14 @@ export default function Dao() {
                   </div>
                   <div className="col-xl-4 col-lg-3 col-md-2 col-sm-1 col-xs-1"></div>
                 </div>
-                <div style={{ width: "60vw", margin: "auto" }}>
+                <div
+                  className="absolute"
+                  style={{
+                    width: "50rem",
+                    marginLeft: "20rem",
+                    marginRight: "10rem",
+                  }}
+                >
                   <div className="row mt-5">
                     {transactionInProgress ? <LockScreen></LockScreen> : <></>}
                     {getHTMLBody()}
