@@ -61,7 +61,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>DAO APP</title>
+        <title>SU Govern</title>
         <meta name="description" content="A blockchain dao app" />
       </Head>
       <Header logged={account} />

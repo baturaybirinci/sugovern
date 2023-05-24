@@ -978,7 +978,7 @@ export default function Dao() {
   return (
     <div className={styles.main}>
       <Head>
-        <title>DAO APP</title>
+        <title>SU Govern</title>
         <meta name="description" content="A blockchain dao app" />
       </Head>
       <div style={{ minHeight: "100vh" }}>
