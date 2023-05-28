@@ -2,5 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
 }
+module.exports = {
+  nextConfig,
+  serverRuntimeConfig: {
+    PROJECT_ROOT: __dirname,
+  },
+};
 
-module.exports = nextConfig

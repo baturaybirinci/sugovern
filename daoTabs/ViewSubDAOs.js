@@ -2,11 +2,14 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import Spinner from "../src/components/Spinner";
 
+
+
 const ViewSubDAOs = ({
   onGetSubDAOs,
   onGetParentDAO,
   onGetDAODescription,
   onGetDAOName,
+  onGetDAOImage
 }) => {
   const [subDAOs, setSubDAOs] = useState([]);
   const [parentDAO, setParentDAO] = useState("");
@@ -25,6 +28,7 @@ const ViewSubDAOs = ({
             address: subDAOAddresses[i],
             name: await onGetDAOName(subDAOAddresses[i]),
             description: await onGetDAODescription(subDAOAddresses[i]),
+            image: await onGetDAOImage(subDAOAddresses[i]),
           }
           daos.push(daoInfo);
         }
@@ -46,6 +50,7 @@ const ViewSubDAOs = ({
           address: parentDAOAddress,
           name: await onGetDAOName(parentDAOAddress),
           description: await onGetDAODescription(parentDAOAddress),
+          image: await onGetDAOImage(parentDAOAddress),
         };
         setParentDAO(daoInfo);
         setLoadedParent(true);
@@ -81,8 +86,8 @@ const ViewSubDAOs = ({
                     <div className="card-header">
                       <div className="container p-3">
                         <img
-                          className="card-img-top rounded-circle"
-                          src="https://picsum.photos/200/200"
+                          className="card-img-top "
+                          src={parentDAO["image"]}
                           alt="Card image cap"
                         />
                       </div>
@@ -121,8 +126,8 @@ const ViewSubDAOs = ({
                       <div className="card-header">
                         <div className="container p-3">
                           <img
-                            className="card-img-top rounded-circle"
-                            src="https://picsum.photos/200/200"
+                            className="card-img-top"
+                            src={dao["image"]}
                             alt="Card image cap"
                           />
                         </div>
