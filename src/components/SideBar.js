@@ -151,7 +151,7 @@ function Sidebar({ setSelectedNavItem, selectedNavItem, status }) {
               Check My Tokens
             </p>
           </li>
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <p
               className={
                 selectedNavItem === 8 ? "nav-link text-secondary" : "nav-link"
@@ -163,7 +163,7 @@ function Sidebar({ setSelectedNavItem, selectedNavItem, status }) {
             >
               Delegate Tokens
             </p>
-          </li>
+          </li> */}
         </ul>
       ) : (
         <div></div>
