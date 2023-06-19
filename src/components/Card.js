@@ -1,7 +1,7 @@
 import {DAO_JSON, RPC} from "../../constant";
 import Web3 from "web3";
 import { useEffect, useState } from "react"
-function Card({ address,sub }) {
+function Card({ address,key }) {
   // dao?address=
   const [imageUrl, setImageUrl] = useState(null)
   const [title, setTitle] = useState(null)
@@ -35,7 +35,7 @@ function Card({ address,sub }) {
   return (
     <a href={`dao?address=${address}`}>
       {/* className="item-card-link"  */}
-      <div key={0} style={{ cursor: "pointer" }}>
+      <div key={key} style={{ cursor: "pointer" }}>
         <div className="item-card">
           <div style={{margin:'auto',minHeight:'15vh',display:"flex"}}>
             <img

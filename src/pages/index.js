@@ -79,8 +79,8 @@ export default function Home() {
                         </div>
                         <div className={'sub-dao'}>
                             <SimpleGrid columns={LINE_COUNT} spacing={10}>
-                                {SUB_DAOS.map((dao) => (
-                                    <Card address={dao}/>
+                                {SUB_DAOS.map((dao,index) => (
+                                    <Card key={index} address={dao}/>
                                 ))}
                             </SimpleGrid>
                         </div>
